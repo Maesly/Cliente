@@ -1,6 +1,10 @@
 //
 // Created by maesly on 17/09/17.
 //
+/**
+ * @file cliente.cpp
+ * @author Maesly V.
+ * */
 
 #include <iostream>
 #include <string.h>
@@ -17,41 +21,41 @@
 using namespace std;
 
 /**
- * Constructor de la clase
+ * @brief Constructor de la clase
  */
 
 Cliente::Cliente(sockaddr_in server_addr) {
-    isExit = false;
+    salir = false;
 }
 
 /**
- *Detiene el servidor
+ *@brief Metodo que detiene el servidor
  */
 
-void Cliente::stop() {
-    isExit = true;
-    shutdown(client,SHUT_RDWR);
+void Cliente::detener() {
+    salir = true;
+    shutdown(cliente,SHUT_RDWR);
 }
 
 /**
-*Inicializador
+*@brief Metodo que inicializa el socket y llama la funcion ejecutar()
 */
 
-void Cliente::begin() {
-    client= socket(AF_INET,SOCK_STREAM,0);
-    run();
+void Cliente::iniciar() {
+    cliente= socket(AF_INET,SOCK_STREAM,0); //Crea el socket cliente
+    ejecutar(); //ejecutala funcion
 }
 /**
- * Destructor de la clase
+ * @brief Destructor de la clase
  */
 
 Cliente::~Cliente(){}
 /**
- * Metodo principal para conectarse al servidor
+ * @brief Metodo principal para conectarse al servidor
  * */
-void Cliente::run() {
+void Cliente::ejecutar() {
 
-    if(client<0){
+    if(cliente<0){
         cout <<"Error al crear el socket cliente";
         exit(0);
     }
@@ -60,15 +64,15 @@ void Cliente::run() {
     cin>>a;
 
     cout << "Socket creado"<< endl;
-    server_addr.sin_family = AF_INET;
+    server_addr.sin_family = AF_INET;               //asinar a la estructura sockaddr un dominio, ip y puerto
     server_addr.sin_port = htons(port);
     inet_pton(AF_INET,ip,&server_addr.sin_addr);
 
-    if(connect(client,(struct sockaddr *) &server_addr,sizeof(server_addr))==0)
+    if(connect(cliente,(struct sockaddr *) &server_addr,sizeof(server_addr))==0)
         cout << "Conexion con el servidor\n"<< inet_ntoa(server_addr.sin_addr)<<endl;
 
     cout << "Esperando confirmacion del servidor "<< endl;
-    recv(client,buffer,bufsize,0);
+    recv(cliente,buffer,bufsize,0);
 
     cout<< "Respuesta recibida"<< buffer;
     cout<< "\n Poner * al final de cada mensaje \n Escriba # para terminar la conexion\n";
@@ -77,27 +81,27 @@ void Cliente::run() {
         cout<< "Escribir mensaje: ";
         do{
             cin>> buffer;
-            send(client,buffer,bufsize,0);
+            send(cliente,buffer,bufsize,0);
             if(*buffer == '#'){
-                send(client,buffer,bufsize,0);
+                send(cliente,buffer,bufsize,0);
                 *buffer = '*';
-                isExit = true;
+                salir = true;
 
             }
         }while(*buffer != 42);
         cout<< "Mensaje recibido: ";
         do{
-            recv(client,buffer,bufsize,0);
+            recv(cliente,buffer,bufsize,0);
             cout<< buffer<<" ";
             if(*buffer ==  '#'){
                 *buffer = '*';
-                isExit = true;
+                salir = true;
 
             }
         }while(*buffer != 42);
         cout<<endl;
-    }while(!isExit);
+    }while(!salir);
     cout<< "Conexion terminada. Programa finalizado\n\n";
-    close(client);
+    close(cliente);
     return;
 }

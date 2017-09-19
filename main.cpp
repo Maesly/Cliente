@@ -11,13 +11,14 @@
 #include <thread>
 #include <stdio.h>
 #include "cliente.h"
+#include <pthread.h>
 using namespace std;
 
 int main() {
     std::cout << "Hello, World!" << std::endl;
 
     Cliente* cliente = new Cliente(sockaddr_in());
-    cliente->begin();
+    cliente->iniciar();
 
     return 0;
 
