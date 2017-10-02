@@ -73,12 +73,19 @@ void Cliente::ejecutar() {
 
 
     while (!salir){
-        cout << "Oprima 1 para insertar elemento\n";
-        cout << "Oprima 2 para buscar elemento\n";
-        cout << "Oprima 3 para eliminar elemento\n";
+        cout << "\tOprima 1 para insertar elemento\n";
+        cout << "\tOprima 2 para buscar elemento\n";
+        cout << "\tOprima 3 para eliminar elemento\n";
         cin>>buffer;
 
-        if(*buffer == '1'){
+        if(*buffer =='salir'){
+            send(cliente,buffer,bufsize,0);
+            cout<<*buffer;
+        }
+        else if(*buffer == '1'){
+
+            //cout<< "Inserte un dato:\n";
+            //cin>>buffer;
             send(cliente,buffer,bufsize,0);
             cout << *buffer;
         }
@@ -86,8 +93,8 @@ void Cliente::ejecutar() {
             send(cliente,buffer,bufsize,0);
             cout << *buffer;
         }
-        else if(*buffer == '3'){
-            send(cliente,buffer,bufsize,0);
+        else if(*buffer == '3') {
+            send(cliente, buffer, bufsize, 0);
             cout << *buffer;
         }
         else{
