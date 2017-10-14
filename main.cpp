@@ -45,13 +45,10 @@ int main(int argc, char *argv[]) {
     gtk_widget_show_all(window);  //hace que la ventana sea visible
 
     gtk_main();
-
-
     std::cout << "Hello, World!" << std::endl;
 
     Cliente* cliente = new Cliente(sockaddr_in());
     cliente->iniciar();
-
     return 0;
 
 }

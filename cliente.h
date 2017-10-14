@@ -16,7 +16,7 @@
 class Cliente{
 private:
     int cliente;                        /// socket
-    int port = 8080;                    // numero de puerto del servidor
+    int port = 6060;                    // numero de puerto del servidor
     bool salir = false;                 // booleano para mantener el while
     const int bufsize = 1024;           // tamaño de las palabras
     char* buffer = new char(bufsize);   // son los char que se van a enviar y recibir

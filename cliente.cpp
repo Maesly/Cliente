@@ -43,7 +43,7 @@ void Cliente::detener() {
 
 void Cliente::iniciar() {
     cliente= socket(AF_INET,SOCK_STREAM,0); //Crea el socket cliente
-    ejecutar(); //ejecutala funcion
+    ejecutar(); //ejecuta la funcion
 }
 /**
  * @brief Destructor de la clase
@@ -73,35 +73,23 @@ void Cliente::ejecutar() {
 
 
     while (!salir){
-        cout << "\tOprima 1 para insertar elemento\n";
-        cout << "\tOprima 2 para buscar elemento\n";
-        cout << "\tOprima 3 para eliminar elemento\n";
+        cout << "\t 1. Para insertar elemento\n";
+        cout << "\t 2. Para eliminar elemento\n";
+        cout << "\t 3. Para mostrar lista\n";
+        cout << "\t 4. Para salir \n";
         cin>>buffer;
-
-        if(*buffer =='salir'){
-            send(cliente,buffer,bufsize,0);
-            cout<<*buffer;
+        char* envia = (char*)calloc(1,1024);
+        strcpy(buffer, "El mensaje fue recibido");
+        send(cliente,buffer,1024,0);
+        recv(cliente, buffer, 1024, 0);
+        while(*buffer != 'l'){
+            recv(cliente, buffer, 1024, 0);
+            strcpy(envia, "El mensaje fue recibido");
+            send(cliente,envia,1024,0);
         }
-        else if(*buffer == '1'){
-
-            //cout<< "Inserte un dato:\n";
-            //cin>>buffer;
-            send(cliente,buffer,bufsize,0);
-            cout << *buffer;
-        }
-        else if(*buffer == '2'){
-            send(cliente,buffer,bufsize,0);
-            cout << *buffer;
-        }
-        else if(*buffer == '3') {
-            send(cliente, buffer, bufsize, 0);
-            cout << *buffer;
-        }
-        else{
-            send(cliente,buffer,bufsize,0);
-        }
-        }
-        //strcpy(buffer,"HOLIS");
-
-        //exit(0);
+        close(cliente);
+        salir = true;
+    }
+    cout<< "Conexion terminada. Programa finalizado\n\n";
+    close(cliente);
 }
